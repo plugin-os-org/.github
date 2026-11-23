@@ -13,7 +13,7 @@ Plugin OS 属于前沿工业级架构，我们仅支持最新的 Minor 版本和
 
 **请勿在公共 Issue 区讨论安全漏洞。**
 
-如果您发现了以下类型的安全漏洞，请立即通过邮件发送至 `security@plugin-os-org.org`：
+如果您发现了以下类型的安全漏洞，请立即通过邮件发送至 `14h-18iw2a4d1r@dingtalk.com`：
 
 1. **沙箱逃逸 (Sandbox Escape)**：插件子进程突破 AppContainer / bwrap / Seatbelt 限制，访问未授权的宿主文件或网络。
 2. **越权 RPC 调用 (Unauthorized RPC)**：插件绕过了 `is_call_allowed` 鉴权，调用了未在 Manifest 中声明的其他插件能力。
