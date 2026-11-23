@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # 维护 GitHub Actions 的版本
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # 针对 Python 包（uv/pip）的更新规则
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+    ignore:
+      # 某些底层核心依赖谨慎更新，防止破坏协议兼容性
+      - dependency-name: "pydantic"
+        versions: ["<2.10", ">=3.0.0"]
+      - dependency-name: "asyncio"
