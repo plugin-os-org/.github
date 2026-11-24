@@ -1,25 +1,25 @@
-# Description
+# 描述
 <!-- 请简要说明此 PR 的变更目的和核心逻辑。 -->
 
-## Type of Change
+## 变更类型
 <!-- 请勾选适用的选项。 -->
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Architecture/Refactor
+- [ ] Bug 修复（非破坏性更改，修复小问题）
+- [ ] 新功能（非破坏性更改，添加了功能）
+- [ ] 破坏性更改（修复或功能会导致现有功能无法按预期工作）
+- [ ] 文档更新
+- [ ] 架构/重构
 
-## Impact Analysis
+## 影响分析
 <!-- 工业化系统的核心是评估影响面。请勾选并说明。 -->
-- [ ] **Manifest Change**: 是否修改了 `plugin.toml` 的 Schema？（如有，说明向后兼容策略）
-- [ ] **IPC Protocol Change**: 是否修改了数据面/控制面的帧格式或 RPC 方法？
-- [ ] **Sandbox Policy Change**: 是否修改了插件的权限映射规则？
-- [ ] **Database Schema Change**: 是否涉及宿主的 SQLite 或插件存储表结构的变更？
+- [ ] **Manifest 变更**：是否修改了 `plugin.toml` 的 Schema？（如有，请说明向后兼容策略）
+- [ ] **IPC 协议变更**：是否修改了数据面/控制面的帧格式或 RPC 方法？
+- [ ] **沙箱策略变更**：是否修改了插件的权限映射规则？
+- [ ] **数据库 Schema 变更**：是否涉及宿主的 SQLite 或插件存储表结构的变更？
 
-## Checklist
+## 检查清单
 
-- [ ] I have performed a self-review of my own code.
-- [ ] I have added tests that prove my fix is effective or that my feature works.
-- [ ] New and existing unit tests pass locally with my changes.
-- [ ] I have run `mypy --strict` and `ruff check` locally.
-- [ ] I have updated the `developer_guide.md` if the SDK API has changed.
+- [ ] 我已对自己的代码进行了自我审查。
+- [ ] 我已添加测试以验证修复有效或功能正常。
+- [ ] 新增和现有的单元测试在本地均已通过。
+- [ ] 我已在本地运行 `mypy --strict` 和 `ruff check`。
+- [ ] 如果 SDK API 有变更，我已更新 `developer_guide.md`。

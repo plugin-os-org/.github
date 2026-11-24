@@ -13,7 +13,7 @@ Plugin OS 是一个基于 Python 与 FastAPI 构建的工业化微内核插件�
 
 ## 核心仓库矩阵
 
-* `plugin-os-sdk`：契约中心（Pydantic 模型与插件上下文）。
+* `plugin-os-sdk`：契约中心（Pydantic 模型与插件上下）。
 * `plugin-os-transport`：通信基座（帧解析与数据面）。
 * `plugin-os-manager`：宿主内核（调度、WatchDog、Gateway）。
 * `plugin-os-template-*`：插件开发脚手架。
