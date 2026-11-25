@@ -1,5 +1,7 @@
 # Security Policy
 
+> 由 Deepseek 生成
+
 ## Supported Versions
 
 Plugin OS 属于前沿工业级架构，我们仅支持最新的 Minor 版本和当前的大版本分支。
