@@ -1,0 +1,97 @@
+name: Commit Lint
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取完整的 Git 历史，以便比对 base 和 head
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate Commit Messages
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python - <<EOF
+          import os
+          import re
+          import subprocess
+          import sys
+
+          BASE_SHA = os.environ["BASE_SHA"]
+          HEAD_SHA = os.environ["HEAD_SHA"]
+
+          # Conventional Commits 规范正则
+          CONV_RE = re.compile(r"^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9_-]+\))?: .+")
+          
+          # 需要强制 AUDIT 的敏感路径
+          SENSITIVE_PATHS = [
+              "src/plugin_os_transport/",
+              "src/plugin_os_manager/sandbox/",
+              "src/plugin_os_sdk/manifest.py"
+          ]
+
+          def get_commits():
+              # 获取 base 到 head 之间的所有 commit sha 和 message
+              cmd = ["git", "log", "--format=%H%x00%B%x00", f"{BASE_SHA}..{HEAD_SHA}"]
+              result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+              parts = result.stdout.strip().split("\x00")
+              commits = []
+              for i in range(0, len(parts) - 1, 2):
+                  if parts[i].strip():
+                      commits.append((parts[i].strip(), parts[i+1].strip()))
+              return commits
+
+          def get_changed_files(commit_sha):
+              cmd = ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", commit_sha]
+              result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+              return result.stdout.splitlines()
+
+          errors = []
+          commits = get_commits()
+
+          if not commits:
+              print("No commits to check.")
+              sys.exit(0)
+
+          for sha, message in commits:
+              short_sha = sha[:7]
+              first_line = message.split("\n")[0]
+              
+              # 1. 校验 Conventional Commits 格式
+              if not CONV_RE.match(first_line):
+                  errors.append(f"[{short_sha}] Invalid commit header: '{first_line}'. Must follow 'type(scope): subject'.")
+                  continue
+                  
+              # 2. 校验 AUDIT footer 规范 (仅针对敏感路径)
+              changed_files = get_changed_files(sha)
+              is_sensitive = any(any(f.startswith(path) for path in SENSITIVE_PATHS) for f in changed_files)
+              
+              if is_sensitive:
+                  if "AUDIT:" not in message:
+                      errors.append(f"[{short_sha}] Missing 'AUDIT:' footer. Sensitive paths were modified: {changed_files}.")
+                  else:
+                      # 简单校验 AUDIT footer 是否包含关键字段
+                      audit_line = [line for line in message.split("\n") if line.startswith("AUDIT:")]
+                      if audit_line:
+                          line = audit_line[0]
+                          if "reason=" not in line or "impact=" not in line:
+                              errors.append(f"[{short_sha}] Invalid AUDIT footer format. Must contain at least 'reason=' and 'impact='.")
+
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          else:
+              print("All commit messages are valid.")
+          EOF
