@@ -19,3 +19,8 @@ Plugin OS 是一个基于 Python 与 FastAPI 构建的工业化微内核插件�
 * `plugin-os-template-*`：插件开发脚手架。
 
 **警告**：请勿在生产环境中使用尚未通过安全审计的第三方源插件。
+
+## 架构文档
+
+* [DESIGN.md (架构设计纲领)](../DESIGN.md)
+* [ARCHITECTURE.md (系统架构详解)](../ARCHITECTURE.md)
